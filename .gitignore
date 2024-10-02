@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+.idea/
+.env
+db.sqlite3
+migrations/
+media/
+node/
+.DS_Store
+dump.rdb
