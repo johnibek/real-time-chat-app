@@ -38,7 +38,8 @@ if ENVIRONMENT == 'development':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*', "django-chatapp-f59b0bf9261f.herokuapp.com"]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*', "real-time-chat-app-jxu0.onrender.com"]
+CSRF_TRUSTED_ORIGINS = ['https://real-time-chat-app-jxu0.onrender.com']
 
 
 # Application definition
