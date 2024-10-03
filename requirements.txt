@@ -7,6 +7,7 @@ cffi==1.17.1
 channels==4.1.0
 channels-redis==4.2.0
 charset-normalizer==3.3.2
+click==8.1.7
 cloudinary==1.41.0
 constantly==23.10.4
 cryptography==43.0.1
@@ -20,6 +21,7 @@ django-environ==0.11.2
 django-heroku==0.3.1
 django-htmx==1.19.0
 gunicorn==23.0.0
+h11==0.14.0
 hyperlink==21.0.0
 idna==3.8
 incremental==24.7.2
@@ -42,5 +44,6 @@ Twisted==24.7.0
 txaio==23.1.1
 typing_extensions==4.12.2
 urllib3==2.2.3
+uvicorn==0.31.0
 whitenoise==6.7.0
 zope.interface==7.0.3
