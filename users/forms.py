@@ -22,3 +22,8 @@ class EmailForm(forms.ModelForm):
         model = User
         fields = ['email']
 
+
+class TelegramLoginForm(forms.Form):
+    telegram_otp = forms.CharField(required=True,
+                                   widget=forms.TextInput(attrs={'placeholder': 'Enter the code you get from telegram bot', 'autocomplete': 'off'}),
+                                   max_length=6)

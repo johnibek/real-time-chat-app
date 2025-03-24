@@ -1,11 +1,14 @@
-from allauth.account.utils import send_email_confirmation
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import logout
-from .forms import ProfileForm, EmailForm
+from django.contrib.auth import login
+
+from .models import TelegramOTP
+from .forms import ProfileForm, EmailForm, TelegramLoginForm
+from .tasks import send_confirmation_email
 
 
 def profile_view(request, username=None):
@@ -62,7 +65,7 @@ def profile_email_change(request):
             # The signal updates emailaddress and set verified to False
 
             # Then send confirmation email
-            send_email_confirmation(request, request.user)
+            send_confirmation_email.delay(request.user.id)
             return redirect('profile_settings')
         else:
             messages.warning(request, "Form Not Valid")
@@ -73,7 +76,8 @@ def profile_email_change(request):
 
 @login_required
 def profile_email_verify(request):
-    send_email_confirmation(request, request.user)
+    user_id = request.user.id
+    send_confirmation_email.delay(user_id)
     messages.success(request, f"Confirmation Email Sent To {request.user.email}")
     return redirect('profile_settings')
 
@@ -90,3 +94,27 @@ def profile_delete_view(request):
         messages.success(request, "Account Deleted")
         return redirect("home")
 
+
+def telegram_login_view(request):
+    if request.method == 'GET':
+        form = TelegramLoginForm()
+        return render(request, 'users/telegram_login.html', {'form': form})
+
+    if request.method == 'POST':
+        form = TelegramLoginForm(request.POST)
+
+        if form.is_valid():
+            otp = form.cleaned_data.get('telegram_otp')
+            otps = TelegramOTP.objects.filter(otp=otp)
+            if otps.exists():
+                otp_obj = otps.first()
+                otp_obj.user.backend = 'allauth.account.auth_backends.AuthenticationBackend'
+                login(request, otp_obj.user, backend=otp_obj.user.backend)  # Log in the user
+                otp_obj.delete()
+                return redirect('profile')
+            else:
+                messages.error(request, "Incorrect code entered. Please check your one-time code and try again.")
+                return redirect('telegram_login')
+
+        messages.warning(request, "You have entered incorrect data. Please enter the code you get from telegram bot.")
+        return redirect('telegram_login')

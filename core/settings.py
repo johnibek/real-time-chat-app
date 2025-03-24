@@ -44,6 +44,7 @@ CSRF_TRUSTED_ORIGINS = ['https://real-time-chat-app-jxu0.onrender.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -85,6 +86,16 @@ MIDDLEWARE = [
     "django_htmx.middleware.HtmxMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 ROOT_URLCONF = 'core.urls'
 
@@ -129,10 +140,7 @@ else:
 
 if ENVIRONMENT == 'development':
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3'
-        }
+        'default': dj_database_url.parse(env('DATABASE_URL_DEV'))
     }
 else:
     DATABASES = {
@@ -211,4 +219,5 @@ ACCOUNT_EMAIL_SUBJECT_PREFIX = ""
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 # django_heroku.settings(locals())

@@ -19,7 +19,7 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 from django.conf.urls.static import static
 from django.conf import settings
-from users.views import profile_view
+from users.views import profile_view, telegram_login_view
 
 
 urlpatterns = [
@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('chat.urls')),
     path("profile/", include("users.urls")),
     path('accounts/', include('allauth.urls')),
+    path('telegram-login', telegram_login_view, name='telegram_login'),
     path("@<str:username>/", profile_view, name='profile'),
 
     # Handling static files when debug=False

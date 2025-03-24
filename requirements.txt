@@ -47,3 +47,4 @@ urllib3==2.2.3
 uvicorn==0.31.0
 whitenoise==6.7.0
 zope.interface==7.0.3
+aiogram
