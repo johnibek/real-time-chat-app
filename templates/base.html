@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="csrf-token" content="{{ csrf_token }}"> -->
     <title>Project Title</title>
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -12,6 +13,14 @@
     <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
     <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+            document.body.addEventListener("htmx:configRequest", function (event) {
+                event.detail.headers["X-CSRFToken"] = csrfToken;
+            });
+        });
+    </script> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style type="text/tailwindcss">
         [x-cloak] {

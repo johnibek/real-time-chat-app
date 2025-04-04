@@ -1,0 +1,8 @@
+<form action="{% url "edit-message" message.id %}" method="post" class="flex gap-2 text-black" autocomplete="off">
+    {% csrf_token %}
+    {% for field in form %}
+        {{ field }}
+    {% endfor %}
+    <button class="block !bg-gray-800" type="submit">Submit</button>
+    <a href="{% url 'home' %}"><button class="block !bg-gray-800" type="button">Cancel</button></a>
+</form>

@@ -1,5 +1,6 @@
 from channels.generic.websocket import WebsocketConsumer
 from django.contrib.auth.models import User
+from django.http import Http404
 
 from .models import ChatGroup, GroupMessage
 from django.shortcuts import get_object_or_404
@@ -15,7 +16,7 @@ async def connect(self):
     await self.accept()
 """
 
-class ChatroomConsumer(WebsocketConsumer):
+class ChatroomConsumer(WebsocketConsumer):  
     def connect(self):
         self.user = self.scope['user']
         self.chatroom_name = self.scope['url_route']['kwargs']['chatroom_name']
@@ -46,7 +47,7 @@ class ChatroomConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         text_data_object = json.loads(text_data)
-        body = text_data_object['body']
+        body = text_data_object.get('body')
         message = GroupMessage.objects.create(
             body=body,
             author=self.user,

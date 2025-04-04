@@ -34,3 +34,11 @@ class ChatroomEditModelForm(forms.ModelForm):
                 'maxlength': '300'
             })
         }
+
+
+class MessageEditForm(forms.Form):
+    message = forms.CharField(required=True)
+
+    class Meta:
+        model = GroupMessage
+        fields = ['message']

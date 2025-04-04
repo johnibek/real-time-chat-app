@@ -36,10 +36,7 @@ class GroupMessage(models.Model):
             return None
 
     def __str__(self):
-        if self.body:
-            return f"{self.author.username} : {self.body}"
-        elif self.file:
-            return f"{self.author.username} : {self.filename}"
+        return f"{self.author.username} : {self.body if not self.filename else self.filename}"
 
     class Meta:
         ordering = ['-created']

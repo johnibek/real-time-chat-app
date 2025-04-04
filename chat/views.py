@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from channels.layers import get_channel_layer
@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from asgiref.sync import async_to_sync
 from .models import *
 from .forms import ChatMessagesModelForm, NewGroupModelForm, ChatroomEditModelForm
+
 
 @login_required
 def chat_view(request, chatroom_name="public-chat"):
@@ -174,4 +175,35 @@ def chat_file_upload(request, chatroom_name):
          )
 
     return HttpResponse()
+
+
+@login_required
+def delete_message(request, message_id):
+    message = get_object_or_404(GroupMessage, id=message_id)
+    if request.user == message.author:
+        message.delete()
+        messages.success(request, "Message deleted successfully")
+        return redirect('home')
+
+    messages.error(request, "Not authorized to delete this message.")
+    return redirect('home')
+
+
+@login_required
+def edit_message(request, message_id):
+    message = get_object_or_404(GroupMessage, id=message_id)
+    if request.method == 'GET':
+        form = ChatMessagesModelForm(instance=message)
+        return render(request, 'chat/edit_message.html', {'form': form, 'message': message})
+
+    if request.method == 'POST':
+        form = ChatMessagesModelForm(data=request.POST, instance=message)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Message edited successfully')
+            return redirect('home')
+
+        else:
+            messages.warning(request, 'Invalid message added')
+            return redirect('home')
 

@@ -59,7 +59,8 @@
                         hx-ext="ws"
                         ws-connect="/ws/chat/{{ chatroom_name }}"
                         ws-send
-                        _="on htmx:wsAfterSend reset() me">
+                        _="on htmx:wsAfterSend reset() me"
+                        >
                         
                         {% csrf_token %}
 
@@ -110,5 +111,14 @@
             }, time)
         }
         scrollToBottom(100)
+
+        function showNotification() {
+        const notification = document.getElementById("notification");
+        notification.classList.remove("hidden");
+
+        setTimeout(() => {
+            notification.classList.add("hidden");
+        }, 3000); // Hide after 3 seconds
+        }
     </script>
 {% endblock %}
