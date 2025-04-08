@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'chat',
 ]
 
-SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -74,16 +73,6 @@ MIDDLEWARE = [
     "django_htmx.middleware.HtmxMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
 
 ROOT_URLCONF = 'core.urls'
 
@@ -107,21 +96,21 @@ TEMPLATES = [
 
 ASGI_APPLICATION = 'core.asgi.application'
 
-if ENVIRONMENT == 'development':
-    CHANNEL_LAYERS = {
-        'default': {
-            "BACKEND": "channels.layers.InMemoryChannelLayer",
-        }
-    }
-else:
-    CHANNEL_LAYERS = {
-        "default": {
-            "BACKEND": "channels_redis.core.RedisChannelLayer",
-            "CONFIG": {
-                "hosts": [(env('REDIS_URL'))],
-            },
+# if ENVIRONMENT == 'development':
+#     CHANNEL_LAYERS = {
+#         'default': {
+#             "BACKEND": "channels.layers.InMemoryChannelLayer",
+#         }
+#     }
+# else:
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("cache", 6379)],
         },
-    }
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -130,7 +119,7 @@ if ENVIRONMENT == 'development':
     DATABASES = {
         'default': dj_database_url.parse(env('DATABASE_URL_DEV'))
     }
-else:
+elif ENVIRONMENT == 'production':
     DATABASES = {
         'default': dj_database_url.parse(env('DATABASE_URL'))
     }
@@ -159,7 +148,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 
@@ -187,6 +176,10 @@ else:
         'CLOUDINARY_URL': env('CLOUDINARY_URL')
     }
 
+CELERY_BROKER_URL = 'redis://cache:6379/0'
+CELERY_RESULT_BACKEND = 'redis://cache:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

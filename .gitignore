@@ -8,3 +8,4 @@ media/
 node/
 .DS_Store
 dump.rdb
+static/
