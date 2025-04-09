@@ -168,13 +168,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = 'media/'
 
-if ENVIRONMENT == 'development':
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-else:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    CLOUDINARY_STORAGE = {
-        'CLOUDINARY_URL': env('CLOUDINARY_URL')
-    }
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 CELERY_BROKER_URL = 'redis://cache:6379/0'
 CELERY_RESULT_BACKEND = 'redis://cache:6379/0'
@@ -201,4 +196,3 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-# django_heroku.settings(locals())
