@@ -9,7 +9,6 @@
 - ### send images and gifs
 
 ## Images:
-![img.png](site-images/img1.png)
 ### Profile section
 ![img.png](site-images/img2.png)
 ### Edit Profile
