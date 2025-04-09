@@ -10,8 +10,8 @@ import sys
 from asgiref.sync import sync_to_async
 from uuid import uuid4
 import environ
-from pathlib import Path
 from django.conf import settings
+
 
 env = environ.Env()
 environ.Env.read_env()

@@ -1,5 +1,4 @@
 # Django Chat App
-### This site is online in `https://real-time-chat-app-jxu0.onrender.com/`
 ## Description
 ### This real-time chat app is built using `django`, `django channels`, `htmx`. You can chat in real time with people from different parts of the world.
 ## In this chat, you can:
