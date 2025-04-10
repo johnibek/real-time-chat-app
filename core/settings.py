@@ -6,20 +6,14 @@ import dj_database_url
 env = environ.Env()
 environ.Env.read_env()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 ENVIRONMENT = env('ENVIRONMENT')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 if ENVIRONMENT == 'development':
     DEBUG = True
 else:
@@ -29,7 +23,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*', "real-time-chat-app-jxu0.onrende
 CSRF_TRUSTED_ORIGINS = ['https://real-time-chat-app-jxu0.onrender.com', 'https://chat.jprq.site']
 
 
-# Application definition
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -96,24 +89,21 @@ TEMPLATES = [
 
 ASGI_APPLICATION = 'core.asgi.application'
 
-# if ENVIRONMENT == 'development':
-#     CHANNEL_LAYERS = {
-#         'default': {
-#             "BACKEND": "channels.layers.InMemoryChannelLayer",
-#         }
-#     }
-# else:
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("cache", 6379)],
+if ENVIRONMENT == 'development':
+    CHANNEL_LAYERS = {
+        'default': {
+            "BACKEND": "channels.layers.InMemoryChannelLayer",
+        }
+    }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [("cache", 6379)],
+            },
         },
-    },
-}
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+    }
 
 if ENVIRONMENT == 'development':
     DATABASES = {
@@ -124,8 +114,6 @@ elif ENVIRONMENT == 'production':
         'default': dj_database_url.parse(env('DATABASE_URL'))
     }
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -143,9 +131,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Tashkent'
@@ -154,9 +139,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
