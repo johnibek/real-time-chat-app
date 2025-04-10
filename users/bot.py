@@ -10,13 +10,12 @@ import sys
 from asgiref.sync import sync_to_async
 from uuid import uuid4
 import environ
-from django.conf import settings
-
+from pathlib import Path
 
 env = environ.Env()
 environ.Env.read_env()
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-BASE_DIR = settings.BASE_DIR
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 

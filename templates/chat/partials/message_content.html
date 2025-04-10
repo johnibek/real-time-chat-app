@@ -1,11 +1,11 @@
 {% if message.body %}
-    <span id="message-body">{{ message.body }}</span>
+    <span id="message-{{ message.id }}">{{ message.body }}</span>
 
     {% if message.author == user %}
         <div class="mt-3">
             <a id="message-edit" class="cursor-pointer"
                 hx-get="{% url "edit-message" message.id %}"
-                hx-target="#message-body"
+                hx-target="#message-{{ message.id }}"
                 hx-swap="innerHTML"
             >
                 <i class="bi bi-pencil-fill"></i>
