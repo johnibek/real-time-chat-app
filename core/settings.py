@@ -19,10 +19,10 @@ if ENVIRONMENT == 'development':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*', "real-time-chat-app-jxu0.onrender.com"]
-CSRF_TRUSTED_ORIGINS = ['https://real-time-chat-app-jxu0.onrender.com', 'https://chat.jprq.site']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
+CSRF_TRUSTED_ORIGINS = ['https://chat.jprq.site']
 
-
+SITE_ID = 1
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -34,10 +34,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
-
-    'cloudinary_storage',
-    'cloudinary',
-
     'django.contrib.sites',
     'allauth',
     'allauth.account',
